@@ -1,0 +1,8 @@
+export const SET_USER_INFO = 'SET_USER_INFO';
+export const SET_TERMS = 'SET_TERMS';
+export const SET_CATEGORIES = 'SET_CATEGORIES';
+export const SET_LESSONS = 'SET_LESSONS';
+export const SET_GRADES = 'SET_GRADES';
+export const SET_DECLARATIONS = 'SET_DECLARATIONS';
+export const SET_DECLARATIONS_OPEN = 'SET_DECLARATIONS_OPEN';
+export const SWITCH_THEME = 'SWITCH_THEME';
