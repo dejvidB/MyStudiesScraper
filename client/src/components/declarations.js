@@ -25,9 +25,9 @@ export default class Declarations extends Component {
     render() {
         return (
             <Container style={{ marginTop: "25px" }}>
-                {this.state.has_selected && <Typography>Υπάρχει εκκρεμής δήλωση {this.state.has_selected} μαθημάτων για την τρέχουσα περίοδο. Αναμένεται οριστικοποίηση της από τη Γραμματεία.</Typography>}
-                {(this.props.declarations.declarations_open && !this.state.has_selected) && <Typography>Μπορείς να δηλώσεις τα μαθήματα που θα δώσεις αυτό το εξάμηνο</Typography>}
-                {this.state.has_selected &&
+                {this.state.has_selected !== 0 && (<Typography>Υπάρχει εκκρεμής δήλωση {this.state.has_selected} μαθημάτων για την τρέχουσα περίοδο. Αναμένεται οριστικοποίηση της από τη Γραμματεία.</Typography>)}
+                {(this.props.declarations.declarations_open === true && this.state.has_selected === 0) && (<Typography>Μπορείς να δηλώσεις τα μαθήματα που θα δώσεις σε αυτό το εξάμηνο από την αρχική σελίδα.</Typography>)}
+                {this.state.has_selected !== 0 &&
                     <Accordion expanded={this.state.expanded === 0} onChange={this.handleChange(0)}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
@@ -68,8 +68,8 @@ export default class Declarations extends Component {
                             </AccordionDetails>
                         </Accordion>
                     )
-                })
-                }
+                })}
+                {Object.keys(this.props.declarations.declarations).length === 0 && this.state.has_selected === 0 && <p>ΔΕΝ ΒΡΕΘΗΚΑΝ ΔΗΛΩΣΕΙΣ ΜΑΘΗΜΑΤΩΝ</p>}
             </Container>
         );
     }

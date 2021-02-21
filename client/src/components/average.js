@@ -8,9 +8,9 @@ export default class AverageComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            use_ects: false,
+            use_ects: this.props.lessons.filter(les => les.gradedescr)[0] && this.props.lessons.filter(les => les.gradedescr)[0]["ects"] > 1,
             lessons: this.props.lessons.filter(les => les.gradedescr).map(les => {
-                return { "lescode": les.lescode, "descr": les.descr, "gradedescr": parseFloat(les.gradedescr.replace(/[^,0-9]/g, "").replace(",", ".")), "selected": les.passed, "ects": 1 };
+                return { "lescode": les.lescode, "descr": les.descr, "gradedescr": parseFloat(les.gradedescr.replace(/[^,0-9]/g, "").replace(",", ".")), "selected": les.passed, "ects": les.ects || 1 };
             })
         };
         this.handleToggle = this.handleToggle.bind(this);
@@ -20,9 +20,11 @@ export default class AverageComponent extends Component {
 
     handleToggle = () => {
         this.setState(state => ({
-            ...state, use_ects: !state.use_ects
-        })
-        );
+            use_ects: !state.use_ects,
+            lessons: this.props.lessons.filter(les => les.gradedescr).map(les => {
+                return { "lescode": les.lescode, "descr": les.descr, "gradedescr": parseFloat(les.gradedescr.replace(/[^,0-9]/g, "").replace(",", ".")), "selected": les.passed, "ects": les.ects || 1 };
+            })
+        }));
     }
 
     handleCheck = (e, lescode) => {
@@ -67,10 +69,18 @@ export default class AverageComponent extends Component {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {
+                            {this.state.lessons.length === 0 &&
+                                <TableRow>
+                                    <TableCell />
+                                    <TableCell>ΔΕΝ ΒΡΕΘΗΚΕ ΙΣΤΟΡΙΚΟ ΜΑΘΗΜΑΤΩΝ</TableCell>
+                                    <TableCell />
+                                    <TableCell />
+                                </TableRow>
+                            }
+                            {this.state.lessons.length > 0 &&
                                 this.state.lessons.map(les => {
-                                    sum += les.selected && les.ects > 0 && les.gradedescr >= 5 ? parseFloat(les.gradedescr * les.ects) : 0;
-                                    ects += les.selected && les.ects > 0 && les.gradedescr >= 5 ? parseFloat(les.ects) : 0;
+                                    sum += les.selected ? parseFloat(les.gradedescr) * (this.state.use_ects ? parseFloat(les.ects) : 1) : 0;
+                                    ects += les.selected ? this.state.use_ects ? parseFloat(les.ects) : 1 : 0;
                                     return (
                                         <TableRow key={les.lescode}>
                                             <TableCell>
@@ -85,7 +95,7 @@ export default class AverageComponent extends Component {
                                                 {les.gradedescr}
                                             </TableCell>
                                             <TableCell>
-                                                <TextField type="number" defaultValue={les.ects} disabled={!this.state.use_ects} onChange={(e) => { this.handleEctsChange(e, les.lescode) }} />
+                                                <TextField type="number" value={this.state.use_ects ? les.ects : 1} disabled={!this.state.use_ects} onChange={(e) => { this.handleEctsChange(e, les.lescode) }} />
                                             </TableCell>
                                         </TableRow>
                                     );

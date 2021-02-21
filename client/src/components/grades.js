@@ -35,9 +35,7 @@ export default class GradesComponent extends Component {
                 {Object.keys(grades).map(key => {
                     return (
                         <Accordion key={key} expanded={this.state.expanded === key} onChange={this.handleChange(key)}>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                            >
+                            <AccordionSummary expandIcon={<ExpandMoreIcon />} >
                                 <Typography>{key}</Typography>
                             </AccordionSummary>
                             <AccordionDetails>
@@ -55,6 +53,7 @@ export default class GradesComponent extends Component {
                         </Accordion>
                     );
                 })}
+                {Object.keys(grades).length === 0 && <p>ΔΕΝ ΒΡΕΘΗΚΕ ΙΣΤΟΡΙΚΟ ΒΑΘΜΟΛΟΓΙΑΣ</p>}
             </Container>
         );
     }
