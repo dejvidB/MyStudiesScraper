@@ -6,6 +6,7 @@ import HomeComponent from './home';
 import DeclarationsComponent from './declarations';
 import AverageComponent from './average';
 import GradesComponent from './grades';
+import InfoComponent from './info';
 
 import { Switch, Route, Redirect, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux';
@@ -92,6 +93,7 @@ class Main extends Component {
                                             lessons={this.props.lessons.lessons}
                                             declarations_open={this.props.declarations.declarations_open}
                                             setLessons={this.props.setLessons}
+                                            theme={this.props.theme.theme}
                                         />} exact />
                                 <Route path="/declarations"
                                     component={() =>
@@ -108,6 +110,13 @@ class Main extends Component {
                                     component={() =>
                                         <GradesComponent
                                             grades={this.props.grades.grades}
+                                        />} exact />
+                                <Route path="/info"
+                                    component={() =>
+                                        <InfoComponent
+                                            data={this.props.user_info.user_info.data}
+                                            name={this.props.user_info.user_info.username}
+                                            am={this.props.user_info.user_info.uid}
                                         />} exact />
                             </>
                         }
