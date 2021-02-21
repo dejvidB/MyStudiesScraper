@@ -11,7 +11,6 @@ import { Done, WarningRounded, CalendarTodayRounded, ExpandMore, ChevronRight, S
 import { TreeView, TreeItem, Alert } from '@material-ui/lab';
 
 let default_expanded = [];
-let grades_array = [];
 let terms_array = [], i = 0;
 
 export default class HomeComponent extends Component {
@@ -142,8 +141,7 @@ export default class HomeComponent extends Component {
                             if (!categories_array[cat][les.typedescr])
                                 categories_array[cat][les.typedescr] = [];
                             categories_array[cat][les.typedescr].push(les);
-                            if (les.gradedescr) {
-                                grades_array.push({ "name": les.descr, "grade": les.gradedescr.replace(/[^,0-9]/g, "").replace(",", "."), "ects": 1, "lescode": les.lescode, "selected": les.passed });
+                            if (les.gradedescr.length) {
                                 if (parseFloat(les.gradedescr.replace(/[^,0-9]/g, "").replace(",", ".")) >= 5 || les.passed)
                                     perasmena++;
                                 else
@@ -194,7 +192,7 @@ export default class HomeComponent extends Component {
                                                                         return (
                                                                             <FormControl component="fieldset">
                                                                                 <FormGroup>
-                                                                                    {this.props.declarations_open && !les.passed ? <FormControlLabel style={{ "color": les.passed ? "green" : les.gradedescr && !les.passed ? "red" : "white", width: "100%" }}
+                                                                                    {this.props.declarations_open && !les.passed ? <FormControlLabel style={{ borderBottom: "1px solid grey", "color": les.passed ? "green" : les.gradedescr && !les.passed ? "red" : this.props.theme === "light" ? "black" : "white", width: "100%" }}
                                                                                         control={<Checkbox checked={this.state.selected.indexOf(les.lescode) !== -1} onChange={(e) => this.handleLessCheck(e, les)} />}
                                                                                         label={(parseFloat(les.gradedescr.replace(/[^,0-9]/g, "").replace(",", ".")) || "") + " " + les.descr.replace(
                                                                                             /[^\x00-\x7F]+/g,
@@ -203,7 +201,7 @@ export default class HomeComponent extends Component {
                                                                                             }
                                                                                         )}
                                                                                     /> :
-                                                                                        <TreeItem style={{ "color": les.passed ? "green" : les.gradedescr && !les.passed ? "red" : "white" }} key={term + "/" + cat + "/" + sub + "/" + les.lescode} nodeId={term + "/" + cat + "/" + sub + "/" + les.lescode} label={(parseFloat(les.gradedescr.replace(/[^,0-9]/g, "").replace(",", ".")) || "") + " " + les.descr.replace(
+                                                                                        <TreeItem style={{ borderBottom: "1px solid grey", "color": les.passed ? this.props.theme === "dark" ? "chartreuse" : "ForestGreen" : les.gradedescr && !les.passed ? this.props.theme === "dark" ? "#ff1a1a" : "maroon" : this.props.theme === "light" ? "black" : "white" }} key={term + "/" + cat + "/" + sub + "/" + les.lescode} nodeId={term + "/" + cat + "/" + sub + "/" + les.lescode} label={(parseFloat(les.gradedescr.replace(/[^,0-9]/g, "").replace(",", ".")) || "") + " " + les.descr.replace(
                                                                                             /[^\x00-\x7F]+/g,
                                                                                             function (txt) {
                                                                                                 return txt.length >= 3 ? txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase() : txt;
@@ -229,38 +227,39 @@ export default class HomeComponent extends Component {
 
                 </Grid>
                 {this.props.declarations_open &&
-                    <Grid
-                        container
-                        direction="row"
-                        justify="flex-end"
-                        alignItems="center"
-                        style={{ marginTop: "25px", paddingBottom: "25px" }}
-                    >
-                        <Grid item>
-                            <Button
-                                variant="contained"
-                                color="secondary"
-                                endIcon={<Send />}
-                                disabled={!this.state.selected.length}
-                                onClick={this.show_confirmation}
-                            >
-                                Υποβολη Δηλωσης
-                                </Button>
-                        </Grid>
+                <Grid
+                    container
+                    direction="row"
+                    justify="flex-end"
+                    alignItems="center"
+                    style={{ marginTop: "25px", paddingBottom: "25px" }}
+                >
+                    <Grid item>
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            endIcon={<Send />}
+                            disabled={!this.state.selected.length}
+                            onClick={this.show_confirmation}
+                        >
+                            Υποβολη Δηλωσης
+                            </Button>
                     </Grid>
+                </Grid>
                 }
                 <Dialog
                     open={this.state.show_confirmation}
                     onClose={this.handleClose}
-                    aria-labelledby="responsive-dialog-title"
                 >
-                    <DialogTitle id="responsive-dialog-title">Επιβεβαίωση δήλωσης {this.state.selected.length} μαθημάτων</DialogTitle>
+                    <DialogTitle>Επιβεβαίωση δήλωσης {this.state.selected.length} μαθημάτων</DialogTitle>
                     <DialogContent>
-                        <DialogContentText>
-                            <Typography gutterBottom style={{
-                                display: 'flex'
-                            }}><Warning style={{ color: "red" }} /> Υπάρχει ήδη μία εκκρεμής δήλωση μαθημάτων. Υποβάλλοντας νέα, γίνεται ακύρωση της παλιάς.</Typography>
-                        </DialogContentText>
+                        {this.props.lessons.filter(les => les.selected).length !== 0 &&
+                            <DialogContentText>
+                                <Typography gutterBottom style={{
+                                    display: 'flex'
+                                }}><Warning style={{ color: "red" }} /> Υπάρχει ήδη μία εκκρεμής δήλωση μαθημάτων. Υποβάλλοντας νέα, γίνεται ακύρωση της παλιάς.</Typography>
+                            </DialogContentText>
+                        }
                         <Typography>Πρόκειται να κάνετε δήλωση των εξής μαθημάτων:</Typography>
                         <List dense>
                             {this.props.lessons.filter(les => this.state.selected.indexOf(les.lescode) !== -1).map(les => {
@@ -272,7 +271,7 @@ export default class HomeComponent extends Component {
                             })
                             }
                         </List>
-                        <Typography style={{ textAlign: "center" }}>Βάλτε τα στοιχεία σύνδεσής σας για υποβολή της δήλωσης</Typography>
+                        <Typography style={{ textAlign: "center" }}>Εισάγετε τα στοιχεία σύνδεσής σας για υποβολή της δήλωσης</Typography>
                         <Grid
                             container
                             direction="column"
@@ -280,7 +279,7 @@ export default class HomeComponent extends Component {
                         >
                             <Grid item xs={12}>
                                 <form noValidate onSubmit={this.handleDeclarationSubmit}>
-                                    <TextField label="Όνομα Χρήστη" name="username" value={this.state.username} onChange={this.handleUsernameChange} fullWidth autoFocus />
+                                    <TextField label="Όνομα Χρήστη" name="username" value={this.state.username} onChange={this.handleUsernameChange} fullWidth autoFocus autoComplete="off" />
                                     <FormControl fullWidth>
                                         <InputLabel htmlFor="password">Κωδικός</InputLabel>
                                         <Input
@@ -289,10 +288,10 @@ export default class HomeComponent extends Component {
                                             value={this.state.password}
                                             onChange={this.handlePasswordChange}
                                             name="password"
+                                            autoComplete="off"
                                             endAdornment={
                                                 <InputAdornment position="end">
                                                     <IconButton
-                                                        aria-label="toggle password visibility"
                                                         onClick={this.handleClickShowPassword}
                                                         onMouseDown={this.handleMouseDownPassword}
                                                     >
@@ -309,7 +308,7 @@ export default class HomeComponent extends Component {
                                             </InputAdornment>
                                         }
                                             ΕΠΙΒΕΒΑΙΒΩΣΗ & ΥΠΟΒΟΛΗ
-                                        </Button>
+                                    </Button>
                                 </form>
                             </Grid>
                         </Grid>
@@ -317,11 +316,11 @@ export default class HomeComponent extends Component {
                     <DialogActions>
                         <Button autoFocus onClick={this.handleClose}>
                             Ακυρο
-                            </Button>
+                        </Button>
                     </DialogActions>
                 </Dialog>
-                <Snackbar open={this.state.declaration_res === "success"} onClose={this.handleCloseAlert}>
-                    <Alert severity="success" onClose={this.handleCloseAlert}>
+                <Snackbar open={this.state.declaration_res !== ""} onClose={this.handleCloseAlert}>
+                    <Alert severity={this.state.declaration_res === "success" ? "success" : "error"} onClose={this.handleCloseAlert}>
                         {this.state.declaration_res === "success" ? "Η δήλωση ολοκληρώθηκε με επιτυχία" :
                             this.state.declaration_res === "login error" ? "Έδωσες λάθος όνομα χρήστη ή κωδικό" :
                                 this.state.declaration_res === "declaration error" ? "ΠΡΟΣΟΧΗ! Η δήλωση δεν έχει ολοκληρωθεί!" && <p>Παρουσιάστηκαν λάθη σε ένα η περισσότερα μαθήματα.</p> :
