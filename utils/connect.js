@@ -1,5 +1,10 @@
 module.exports = async (browser, username, password) => {
-    let page = await browser.newPage();
+    let page;
+    let pages = await browser.pages();
+    if(pages.length > 0)
+        page = pages[0];
+    else
+        page = await browser.newPage();
     await page.setRequestInterception(true);
     page.on('request', interceptedRequest => {
         let data = {
