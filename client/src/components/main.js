@@ -81,6 +81,7 @@ class Main extends Component {
                                     setDeclarations={this.props.setDeclarations}
                                     setDeclarationsState={this.props.setDeclarationsState}
                                     theme={theme}
+                                    Login={this.props.Login}
                                 />} exact
                         />
                         {this.props.user_info.terms &&
