@@ -1,7 +1,8 @@
 ## My Studies Scraper
 
 
-__Website link__: https://my-studies-scraper.live
+__Website link__: https://my-studies-scraper.live  
+Προσωρινά εκτός λειτουργίας λόγω reCAPTCHA. Για προεπισκόπηση των λειτουργιών συνδεθείτε με όνομα χρήστη preview. 
 
 
 ### Project Overview
