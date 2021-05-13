@@ -136,7 +136,7 @@ export default withRouter(class LoginComponent extends Component {
                             </Button>
                         </form>
                         <br />
-                        <Typography>Για προεπισκόπιση των λειτουργιών της εφαρμογής συνδεθείτε με όνομα χρήστη: <b>preview</b></Typography>
+                        <Typography>Προσωρινά εκτός λειτουργίας λόγω reCAPTCHA. Για προεπισκόπηση των λειτουργιών της εφαρμογής συνδεθείτε με όνομα χρήστη: <b>preview</b></Typography>
                     </Grid>
                     <Grid item style={{ marginTop: "25px" }} xs={10} sm={8} md={8} lg={4}>
                         <Typography variant="h5">Πώς δουλεύει;</Typography>
