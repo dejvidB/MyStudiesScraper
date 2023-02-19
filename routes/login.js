@@ -34,16 +34,8 @@ async function scrapeAll(browserInstance, username, password) {
 }
 
 router.post('/', (req, res, next) => {
-    if(req.body.username === "preview")
-        res.send(sample);
-    //Start the browser and create a browser instance
-    let browserInstance = startBrowser();
-    // Pass the browser instance to the scraper controller
-    scrapeAll(browserInstance, req.body.username, req.body.password)
-        .then(data => {
-            res.statusCode = 200;
-            res.json(data);
-        });
+    res.send(sample);
+    res.end();
 });
 
 module.exports = router;
