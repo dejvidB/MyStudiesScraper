@@ -2,15 +2,6 @@ const login = require('./connect');
 const load_declarations = require('./declarations');
 const load_user_info = require('./user');
 
-const MongoClient = require('mongodb').MongoClient;
-
-const client = new MongoClient("mongodb+srv://admin:K7EHkzB7T6BWgtX0@mystudiesscraper.3rsub.mongodb.net", { useNewUrlParser: true, useUnifiedTopology: true });
-
-client.connect(err => {
-    if (err)
-        return { "status": "error" };
-});
-
 module.exports = async (browser, username, password) => {
     let terms = 0;
     let grades;
@@ -61,7 +52,7 @@ module.exports = async (browser, username, password) => {
     // User info
     let user_info = await load_user_info(page);
 
-    const collection = client.db("Departments").collection(user_info.university);
+    const collection = [];
 
     const docs = await collection.countDocuments();
     if (docs > 0) {
