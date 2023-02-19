@@ -7,9 +7,9 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { withRouter } from 'react-router-dom';
 
-import Login from "./images/login.png"
-import Login2 from "./images/login2.png"
-import Github from "./images/GitHub.png"
+import Login from "./images/login.png";
+import Login2 from "./images/login2.png";
+import Github from "./images/GitHub.png";
 
 const Alert = props => <MuiAlert elevation={6} variant="filled" {...props} />;
 
@@ -94,7 +94,7 @@ export default withRouter(class LoginComponent extends Component {
                     container
                     direction="column"
                     alignItems="center"
-                    style={{ marginTop: '50px' }}
+                    style={{ marginTop: '30px' }}
                 >
                     <Grid item xs={10} sm={10} md={8}>
                         <form noValidate onSubmit={this.handleSubmit}>
@@ -131,7 +131,7 @@ export default withRouter(class LoginComponent extends Component {
                             </Button>
                         </form>
                         <br />
-                        <Typography>Για προεπισκόπιση των λειτουργιών της εφαρμογής συνδεθείτε με όνομα χρήστη: <b>preview</b></Typography>
+                        <Typography>Προσωρινά εκτός λειτουργίας λόγω reCAPTCHA. Για προεπισκόπηση των λειτουργιών της εφαρμογής συνδεθείτε με όνομα χρήστη: <b>preview</b></Typography>
                     </Grid>
                     <Grid item style={{ marginTop: "25px" }} xs={10} sm={8} md={8} lg={4}>
                         <Typography variant="h5">Πώς δουλεύει;</Typography>
@@ -148,9 +148,11 @@ export default withRouter(class LoginComponent extends Component {
                         </ul>
                         <Typography>④ Αποσυνδέεται από το my-studies</Typography>
                         <Typography>⑤ Εμφανίζει τις πληροφορίες που συνέλεξε</Typography>
-                        <Typography style={{ fontWeight: "600" }}>Καμία πληροφορία δεν αποθηκεύται. Όλα τα δεδομένα ανήκουν και παραμένουν στο my-studies.uoa.gr</Typography>
+                        <Typography style={{ fontWeight: "600" }}>Καμία πληροφορία του χρήστη δεν αποθηκεύται. Όλα τα δεδομένα ανήκουν και παραμένουν στο my-studies.uoa.gr</Typography>
                         <br/>
-                        <Typography> <img src={Github}/> <a style={{ color: "white" }} href="https://github.com/dejvidB/MyStudiesScraper" target="_blank">GitHub repository</a></Typography>
+                        <Typography style={{ fontWeight: "700", textAlign: "center" }}>Η ιστοσελίδα ΔΕΝ αποτελεί επίσημη ιστοσελίδα του πανεπιστημίου.</Typography>
+                        <Typography style={{ textAlign: "center" }}> <img src={Github}/> <a style={{ color: "white" }} href="https://github.com/dejvidB/MyStudiesScraper" target="_blank">GitHub repository</a></Typography>
+                        <Typography style={{ textAlign: "center" }}>This website is created by: <a style={{ color: "white" }} href="https://github.com/dejvidB" target="_blank">dejvidB</a></Typography>
                     </Grid>
                 </Grid>
                 <Snackbar open={this.state.success || this.state.failure} autoHideDuration={6000} onClose={this.handleClose}>

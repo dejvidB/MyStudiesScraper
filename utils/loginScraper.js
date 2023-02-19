@@ -67,7 +67,7 @@ module.exports = async (browser, username, password) => {
     if (docs > 0) {
         for (let i = 0; i < lessons.length; i++){
             if (lessons[i].gradedescr) {
-                let item = await collection.findOne({ lescode: parseInt(lessons[i].lescode) });
+                let item = await collection.findOne({ lescode: lessons[i].lescode });
                 lessons[i]["ects"] = item && item.ects || 1;
             }
         }
